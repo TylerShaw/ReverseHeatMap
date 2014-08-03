@@ -1,6 +1,6 @@
 import Image,sys,os,math
 #open
-im = Image.open("grid.png")
+im = Image.open(“heatmap.png”)
 #setup
 x = 3
 y = 3
