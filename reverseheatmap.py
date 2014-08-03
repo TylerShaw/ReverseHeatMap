@@ -1,30 +1,29 @@
-import Image,sys,os,math
-#open
-im = Image.open(“heatmap.png”)
-#setup
-x = 3
-y = 3
-xx = 0
-yy = 0
-x_max = 700
-y_max = 700
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys,os,math
+from PIL import Image
+
+# open the image and determine size.
+im = Image.open("heatmap.png")
+x = 0
+y = 0
+size = im.size
+x_max = size[0]
+y_max = size[1]
+print x_max
+print y_max
 list = []
 
 while (x < x_max):
 	while (y < y_max):
-		list.append([xx,yy,im.getpixel((x,y))])
-		y+=7
-		yy+=1
-	x+=7
-	xx+=1
-	y=3
-	yy=0
-os.remove('grid.csv')
-os.remove('results.csv')
-appender = open('grid.csv','ab')
-appender2 = open('results.csv','ab')
-appender.write('pin,r,g,b,total\r\n')
-appender2.write('pin,frequency\r\n')
+		list.append([x,y,im.getpixel((x,y))])
+		y+=1
+	x+=1
+	y=1
+os.remove('results.csv’)
+appender = open('results.csv','ab')
+appender.write("x,y,r,g,b,rgbtotal\r\n")
 result = []
 for each in list:
 	x = str(each[0]).zfill(2)
@@ -33,13 +32,10 @@ for each in list:
 	r = rgb[0].replace("(","")
 	g = rgb[1].replace(" ","")
 	b = rgb[2].replace(" ","").replace(")","")
-	xy = str(x+y)
-	result.append([xy,r,g,b])
+	result.append([x,y,r,g,b])
 result = sorted(result)
 
 for each in result:
 	total = str(int(each[1])+int(each[2])+int(each[3]))
 	writeme = str(each[0]+','+each[1]+','+each[2]+','+each[3]+','+total+'\r\n')
-	writeme2 = str(each[0]+','+total+'\r\n')
 	appender.write(writeme)
-	appender2.write(writeme2)
